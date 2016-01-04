@@ -1,17 +1,16 @@
 
 local MainScene = class("MainScene", cc.load("mvc").ViewBase)
 
+MainScene.RESOURCE_FILENAME = "MainScene.csb"
+
 function MainScene:onCreate()
-    -- add background image
-    display.newSprite("HelloWorld.png")
-        :move(display.center)
-        :addTo(self)
-
-    -- add HelloWorld label
-    cc.Label:createWithSystemFont("Hello World", "Arial", 40)
-        :move(display.cx, display.cy + 200)
-        :addTo(self)
-
+    printf("resource node = %s", tostring(self:getResourceNode()))
+    local function OnPlayAdventure()
+    	-- 冒险模式
+    	--self:getApp():enterScene("BigTollgateScene")
+    	self:getApp():enterScene("WarScene")
+    end
+    self:getResourceNode():getChildByName("Btn_Advanture"):addClickEventListener(OnPlayAdventure)
 end
 
 return MainScene
