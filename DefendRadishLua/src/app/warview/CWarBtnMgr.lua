@@ -9,23 +9,13 @@ function CWarBtnMgr:ctor(pWar,dGridData)--jingjing
 	self.m_pWar = pWar
 	self.m_dAllBtn = {}
 
-
 	-- 点击动画
 	self.m_pCanPutAni = CAdvanceSprite.create("select_", 1, 4, 0.1)
 	pWar:addChild(self.m_pCanPutAni)
 	self.m_pCanPutAni:setVisible(false)
-	-- local nRows, nCols = 7, 12 -- 7, 12
-	-- for nR = 1, nRows do
- --    	for nC = 1, nCols do
- --    		local pWarBtn = CWarBtn.new(self.m_fBtnWidth, self.m_fBtnHeight, handler(self,self.ClickWarBtn))
- --    		pWarBtn:AddToParent(pWar)
- --    		pWarBtn:SetBtnPosRC(nR, nC)
- --    		self.m_dAllBtn[pWarBtn] = "nR = "..nR..",nC = "..nC
- --    	end
- --    end
+
  	-- 解析格子数据，加载type
  	local nRows,nCols,nType
- 	-- printf(dGridData)
  	for i,v in pairs(dGridData) do
 		local result = string.split(i,"_")
 		local nR = result[1]
@@ -36,15 +26,7 @@ function CWarBtnMgr:ctor(pWar,dGridData)--jingjing
     	self.m_dAllBtn[pWarBtn] = "nR = "..nR..",nC = "..nC
     	pWarBtn:SetBtnType(v.nGridType)
 
-	 	printf(nR)
-	 	printf(nC)
- 		printf(v.nGridType)
-
  	end
-
-
-
-
 end
 
 function CWarBtnMgr:ClickWarBtn(pWarBtn)
