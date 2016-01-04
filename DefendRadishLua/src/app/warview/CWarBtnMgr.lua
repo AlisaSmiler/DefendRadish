@@ -51,7 +51,6 @@ function CWarBtnMgr:ClickWarBtn(pWarBtn)
 	printf(self.m_dAllBtn[pWarBtn])
 	printf(pWarBtn.m_nStatus)
 	if pWarBtn:IsCanPutTower() then
-		printf("xxxxxxxxxx")
 		local x, y = pWarBtn:GetBtnPos()
 		self.m_pCanPutAni:setPosition(x, y)
 		self.m_pCanPutAni:setVisible(true)
@@ -61,9 +60,8 @@ function CWarBtnMgr:ClickWarBtn(pWarBtn)
 		self.m_pCanPutAni:setVisible(false)
 		self.m_pCanPutAni:StopAni()
 		pWarBtn:SetCanPutTower()
-		printf("yyyyyyyyy")
 	else
-		printf("zzzzzzzzzz")
+		printf("test")
 	end
 end
 
