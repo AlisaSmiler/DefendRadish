@@ -1,15 +1,47 @@
 -- 防御塔基类
-local CWarTowerBase = class("CWarTowerBase")
 
-function CWarTowerBase:ctor()
-	self.m_nID = 0 -- ID
-	self.m_nSID = 0 -- 造型SID
-	self.m_fAttackSpeed = 0 -- 攻击速度(根据SID读表)
-	self.m_fAttackRadius = 0 -- 攻击半径(根据SID读表)
-	self.m_nBuildCostGold = 0 -- 建造花费的价格(根据SID读表)
-	self.m_nDelGainGold = 0 -- 铲除获得的价格(根据SID读表)
-	self.m_pSprite = nil -- 图片对象(根据SID读资源路径)
+local CAdvanceSprite = require("app.views.CAdvanceSprite")
+
+local DEBUG = true
+
+local CWarTowerBase = class("CWarTowerBase", function ()
+	return cc.Node:create()
+end)
+
+function CWarTowerBase:ctor(nID, nSID, nLv)
+	self.m_nID = nID -- ID
+	self.m_nSID = nSID -- 造型SID
+	self.m_nLv = nLv or 1
+	self.m_pData = require(string.format("app.data.towerdata.Tower%d", nSID))
+	self:InitSprite()
+	if DEBUG then
+		self:InitDebug()
+	end
 end
+
+function CWarTowerBase:InitSprite()
+	local sResPath = self.m_pData["dGradeInfo"][self.m_nLv]["sResPath"]
+	self.m_pSprite = CAdvanceSprite.create(sResPath, tonumber(self.m_nLv..1), tonumber(self.m_nLv..3), 0.1)
+	self:addChild(self.m_pSprite)
+end
+
+function CWarTowerBase:InitDebug()
+	local fAttackRadius = self.m_pData["dGradeInfo"][self.m_nLv]["fAttackRadius"]
+
+	self.m_pDrawNode = cc.DrawNode:create()
+	self.m_pDrawNode:drawDot(cc.p(0,0), fAttackRadius, cc.c4f(1.0, 0.0, 0.0, 0.2))
+	self:addChild(self.m_pDrawNode)
+end
+
+function CWarTowerBase:PlayAttackAni()
+	self.m_pSprite:PlayAni()
+end
+
+function CWarTowerBase:PlayIdleAni( ... )
+	self.m_pSprite:StopAni()
+end
+
+local CWarTower101 = class("CWarTower101", CWarTowerBase)
 
 
 -- 防御塔工厂
@@ -23,9 +55,11 @@ function CWarTowerFactory.getInstance()
 	return CWarTowerFactory.m_pInstance
 end
 
-function CWarTowerFactory:CreateTower()
-	-- body
-	return CWarTowerBase.new()
+function CWarTowerFactory.CreateTower(nID, nSID, nLv)
+	if nSID == 101 then
+		return CWarTower101.new(nID, nSID, nLv)
+	end
+	return CWarTowerBase.new(nID, nSID, nLv)
 end
 
 return CWarTowerFactory

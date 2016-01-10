@@ -19,4 +19,9 @@ end
 function CListenerBase:MonsterReached(nMonsterID)
 	self.m_pWar:MonsterReached(nMonsterID)
 end
+
+function CListenerBase:AddTower(nTowerID, nTowerSID, rcPos)
+	self.m_pWar:AddTower(nTowerID, nTowerSID, rcPos)
+end
+
 return CListenerBase

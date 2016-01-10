@@ -16,7 +16,7 @@ function CWarMapEdit:SaveMapFile()
                 ["tCarrotPoint"]={{6,11}}}
   for nR = 1, nRows do
       for nC = 1, nCols do
-        dData["dGridData"][string.format("%d_%d", nR, nC)] = {["nGridType"]=0}
+        dData["dGridData"][string.format("%d_%d", nR, nC)] = {["nGridType"]=w_definesw_defines.GRIDTYPE_CANPUTTOWER}
       end
   end
 

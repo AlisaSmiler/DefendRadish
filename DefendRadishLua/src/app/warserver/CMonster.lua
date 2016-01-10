@@ -63,7 +63,7 @@ function CMonster:UpdateNextDestPos()
 	self.m_xyMoveDis = math.abs(fMoveDis)
 end
 
-function CMonster:GetXYPos(nMosterID)
+function CMonster:GetXYPos()
 	return self.m_xyPos
 end
 

@@ -37,7 +37,7 @@ function CWarBtn:SetBtnPosRC(nRow, nCol)
 end
 
 function CWarBtn:GetBtnPosRC()
-	return self.m_nRow, self.m_nCol
+	return {self.m_nRow, self.m_nCol}
 end
 
 function CWarBtn:GetBtnPos()

@@ -5,6 +5,9 @@ local CAdvanceSprite = class("CAdvanceSprite", function ()
 
 function CAdvanceSprite.create(sSpriteName, nStartFrame, nEndFrame, fDelayPerUnit)
     local pAdvanceSprite = CAdvanceSprite.new(sSpriteName, nStartFrame, nEndFrame, fDelayPerUnit)
+    local pSprite = cc.Sprite:createWithSpriteFrame(CAdvanceSprite._getSpriteFrame(sSpriteName, nStartFrame))
+    pAdvanceSprite:addChild(pSprite)
+    pAdvanceSprite.m_pSprite = pSprite
     return pAdvanceSprite
 end
 
@@ -19,6 +22,17 @@ function CAdvanceSprite:ctor(sSpriteName, nStartFrame, nEndFrame, fDelayPerUnit)
     self.m_fDelayPerUnit = fDelayPerUnit or 0.5
 end
 
+function CAdvanceSprite._getSpriteFrame(sSpriteName, nFrameIndex)
+    local pSpriteFrameCache= cc.SpriteFrameCache:getInstance()
+    local sName = sSpriteName..string.format("%02d.png", nFrameIndex)
+    local pSpriteFrame = pSpriteFrameCache:getSpriteFrame(sName)
+    if pSpriteFrame == nil then
+        sName = sSpriteName..string.format("%d.png", nFrameIndex)
+        pSpriteFrame = pSpriteFrameCache:getSpriteFrame(sName)
+    end
+    return pSpriteFrame
+end
+
 function CAdvanceSprite:_getAni()
     --[[
     如果使用 self.m_pAction 保存该Action
@@ -26,11 +40,10 @@ function CAdvanceSprite:_getAni()
     如果要保留该Action，应当使用 self.m_pAction.retain()
     释放时使用 self.m_pAction.release()
     ]]
-    local pSpriteFrameCache= cc.SpriteFrameCache:getInstance()
+    
     local pAnimation = cc.Animation:create()
     for nFrameIndex=self.m_nStartFrame, self.m_nEndFrame do
-        local sName = self.m_sSpriteName..string.format("%02d.png", nFrameIndex)
-        pAnimation:addSpriteFrame(pSpriteFrameCache:getSpriteFrame(sName))
+        pAnimation:addSpriteFrame(self._getSpriteFrame(self.m_sSpriteName, nFrameIndex))
     end
     pAnimation:setDelayPerUnit(self.m_fDelayPerUnit)
     pAnimation:setRestoreOriginalFrame(true)
@@ -38,11 +51,11 @@ function CAdvanceSprite:_getAni()
 end
 
 function CAdvanceSprite:PlayAni()
-    self:runAction(self:_getAni())
+    self.m_pSprite:runAction(self:_getAni())
 end
 
 function CAdvanceSprite:StopAni()
-    self:stopAllActions()
+    self.m_pSprite:stopAllActions()
 end
 
 return CAdvanceSprite

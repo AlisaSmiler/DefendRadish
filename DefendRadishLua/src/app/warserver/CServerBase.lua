@@ -24,6 +24,7 @@ function CServerBase:LoadMapData(nMapID)
 	self.m_nMapCol = dMapData["vMapSize"][2]
 	self.m_tBornPoint = dMapData["dBornPoint"]
 	self.m_tGridData = dMapData["dGridData"]
+	self.m_dCarrotPoint = dMapData["dCarrotPoint"]
 	local pScheduler = cc.Director:getInstance():getScheduler()
 
 	self.m_pListener:StartWar()
@@ -32,9 +33,13 @@ function CServerBase:LoadMapData(nMapID)
 	self.m_pWavesMgr:Start()
 
 	self.m_pMonsterMgr = require("app.warserver.CMonsterMgr").new(self)
+	self.m_pTowerMgr = require("app.warserver.CTowerMgr").new(self)
 
 end
 
+function CServerBase:GetCarrotPoint()
+	return self.m_dCarrotPoint
+end
 function CServerBase:GetNewID()
 	self.m_nID = self.m_nID + 1
 	return self.m_nID
@@ -64,6 +69,11 @@ function CServerBase:update(fDeltaTime)
 	end
 	self.m_pWavesMgr:update(fDeltaTime)
 	self.m_pMonsterMgr:update(fDeltaTime)
+	self.m_pTowerMgr:update(fDeltaTime)
+end
+
+function CServerBase:GetMonsterMgr()
+	return self.m_pMonsterMgr
 end
 
 --以下是在update中会回调的接口
@@ -86,6 +96,12 @@ function CServerBase:MonsterMgr_MonsterReached(nMonsterID)
 	self.m_pListener:MonsterReached(nMonsterID)
 end
 
---提供给TowerMgr调用的接口
+-- 请求造塔
+function CServerBase:C2SAddTower(nTowerSID, rcPos)
+	printf("出生一个塔:"..nTowerSID)
+	local nTowerID = self:GetNewID()
+	self.m_pListener:AddTower(nTowerID, nTowerSID, rcPos)
+	self.m_pTowerMgr:AddTower(nTowerID, nTowerSID, rcPos)
+end
 
 return CServerBase

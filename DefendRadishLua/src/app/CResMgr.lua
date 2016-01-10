@@ -15,6 +15,10 @@ function CResMgr:LoadPlistOnline()
 	local pSpriteFrameCache= cc.SpriteFrameCache:getInstance()
     pSpriteFrameCache:addSpriteFrames("Res/Theme1/Items/Monsters01-hd.plist")
     pSpriteFrameCache:addSpriteFrames("Res/Items/Items02-hd.plist")
+    pSpriteFrameCache:addSpriteFrames("Res/Towers/TBottle-hd.plist")
+    pSpriteFrameCache:addSpriteFrames("Res/Items/Items01-hd.plist")
+
+
 end
 
 return CResMgr

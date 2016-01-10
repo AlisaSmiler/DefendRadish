@@ -9,6 +9,10 @@ function CMonsterMgr:AddMonster(nMosterID, nMosterSID, tMonsterPath)
 	self.m_dAllMonster[nMosterID] = CMonster.new(nMosterID, nMosterSID, tMonsterPath)
 end
 
+function CMonsterMgr:GetAllMonster()
+	return self.m_dAllMonster
+end
+
 function CMonsterMgr:MonsterReached(nMosterID)
 	self.m_dAllMonster[nMosterID] = nil
 	self.m_pServer:MonsterMgr_MonsterReached(nMosterID)
